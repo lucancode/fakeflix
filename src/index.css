@@ -1,0 +1,227 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+  --main-color: #101720;
+  --netflix-red: #E50914;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: var(--main-color);
+}
+
+body::-webkit-scrollbar {
+  display: none; /* Hide scrollbar on WebKit for browsers (e.g., Chrome, Safari) */
+}
+
+/** movies **/
+h1 {
+  color: #fff;
+  margin: 18px 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.movies {
+  padding: 0 20px;
+}
+
+.movies_list {
+  display: flex;
+  padding-bottom: 20px;
+  overflow-x: scroll;
+}
+
+.movies_list::-webkit-scrollbar {
+  display: none;
+}
+
+.movie_box {
+  position: relative;
+  display: inline-block;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  transition: .5s ease;
+  background-color: rgba(0, 0, 0, 0.5); /* Change this for overlay color */
+}
+
+.movie_box:hover .overlay {
+  opacity: 1;
+  transform: scale(1.08);
+  transition-delay: .2s;
+}
+
+.overlay_content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.movie_title {
+  cursor: pointer;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.movie_img {
+  position: relative;
+  max-height: 150px;
+  object-fit: contain;
+  margin-right: 15px;
+  transition: transform 450ms;
+}
+
+.nowPlaying_list {
+  max-height: 300px;
+}
+
+.movie_box:hover .movie_img {
+  transform: scale(1.08);
+}
+
+/** banner **/
+.banner {
+  object-fit: contain;
+  min-height: 448px;
+  margin-bottom: 40px;
+}
+
+.banner_details {
+  color: #fff;
+  margin-left: 20px;
+  padding-top: 160px;
+  max-width: 750px;
+  height: 190px;
+}
+
+.banner_details h2 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  width: 25em;
+}
+
+.banner_description {
+  font-size: .7rem;
+  padding: 1rem 0;
+  width: 100%;
+  line-height: 1.4;
+  height: 80px;
+}
+
+.banner_btn {
+  display: flex;
+  padding-top: 2rem;
+}
+
+.banner_btn .play, .info {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border: none;
+  color: #000;
+  font-size: 15px;
+  font-weight: 600;
+  height: 44px;
+  width: 113px;
+  margin-right: 20px;
+}
+
+.banner_btn .info {
+  color: #fff;
+  background-color: transparent;
+}
+
+.banner_shadow {
+  height: 16.8rem;
+  background-image: linear-gradient(180deg, transparent, rgba(37,37,37,0.61), var(--main-color))
+}
+
+/* Navbar */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+}
+
+.nav {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 20px 20px;
+  transition: background-color 0.5s ease;
+}
+
+.dark-bg {
+  background: var(--main-color);
+}
+
+.header .logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 38px;
+  letter-spacing: 2px;
+  color: var(--netflix-red);
+  font-weight: 800;
+}
+
+.signin, .signup {
+  cursor: pointer;
+  color: #ffffff;
+  background-color: var(--netflix-red);
+  font-size: 18px;
+  padding: 8px 18px;
+  margin-right: 4px;
+  border: none;
+  border-radius: 2px;
+}
+
+.signup {
+  background-color: transparent;
+}
+
+.related_clip {
+  height: 500px;
+}
+
+/* media query */
+
+@media (max-width: 750px) {
+  .banner_description {
+      overflow-y: scroll;
+      text-overflow: ellipsis;
+      font-size: .49rem;
+  }
+  .banner_description::-webkit-scrollbar {
+    display: none;
+  }
+
+  .banner_details h2 {
+    font-size: 1.5rem;
+  }
+
+  .header .logo {
+    font-size: 30px;
+  }
+}
