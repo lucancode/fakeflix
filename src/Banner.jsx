@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import req from './req';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import YouTube from 'react-youtube';
+import movieTrailer from 'movie-trailer';
 
 // base url to append with the image title so we can get the movie poster 
 const parent_url = "https://image.tmdb.org/t/p/original/";
@@ -9,6 +11,7 @@ const parent_url = "https://image.tmdb.org/t/p/original/";
 const Banner = () => {
     // create a State Hook to store movies information.
     const [movies, setMovies] = useState([]);
+    const [trailerURL, setTrailerURL] = useState("");
 
     useEffect(() => {
         async function fetchMedia() {
@@ -28,6 +31,30 @@ const Banner = () => {
         return str?.length > c ? str.substr(0, c - 1) + "..." : str;
     }
 
+    // an object from the react-youtube library to display the media player from youtube on our react project
+    const opts = {
+        height: '100%',
+        width: '100%',
+        playerVars: {
+          // https://developers.google.com/youtube/player_parameters
+          autoplay: 1,
+        },
+    };
+
+    const clickPlay = (movies) => {
+        if(trailerURL){
+            setTrailerURL("");
+        }
+        else{
+            movieTrailer(movies?.name || movies?.title || movies?.original_title || "")
+            .then((url) => {
+                const urlParams = new URLSearchParams(new URL(url).search);
+                setTrailerURL(urlParams.get("v"));
+            })
+            .catch(() => console.log("Something went wrong!"));
+        }
+    };
+
   return (
     <>
         {/** create inline styling to set banner image. */}
@@ -35,7 +62,7 @@ const Banner = () => {
             backgroundSize: "cover",
             backgroundImage: `url(${parent_url}${movies?.backdrop_path})`,
             backgroundPosition: "center center"
-        }}>
+            }}>
             <div className="banner_details">
                 {/* get title, name OR original name attribute from API depending on what the API used to save movie title */}
                 <h2>{cutshort(movies?.title, 24) || cutshort(movies?.name, 24) || cutshort(movies?.original_name, 24)}</h2>
@@ -43,11 +70,15 @@ const Banner = () => {
                     <h4>{cutshort(movies.overview, 280)}</h4>
                 </div>
                 <div className="banner_btn">
-                    <button className="play"><PlayArrowIcon/> Play</button>
+                    <button className="play" onClick={() => clickPlay(movies)}><PlayArrowIcon/> Play</button>
                     <button className="info">More Info</button>
                 </div>
             </div>
-        <div className="banner_shadow"></div>
+            <div className="banner_shadow"></div>
+            {trailerURL && <YouTube videoId={trailerURL} opts={opts} style={{
+                display:"flex", position: "absolute", top:"0", left:"0", width: "100%", height: "618px", zIndex: "1000"
+                }}
+            />}
         </section>
     </>
   )
