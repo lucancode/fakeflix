@@ -4,6 +4,7 @@ import req from './req';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import YouTube from 'react-youtube';
 import movieTrailer from 'movie-trailer';
+import CloseIcon from '@mui/icons-material/Close';
 
 // base url to append with the image title so we can get the movie poster 
 const parent_url = "https://image.tmdb.org/t/p/original/";
@@ -50,9 +51,21 @@ const Banner = () => {
             .then((url) => {
                 const urlParams = new URLSearchParams(new URL(url).search);
                 setTrailerURL(urlParams.get("v"));
+
+                // hide the close button on click play
+                const close_btn = document.getElementsByClassName("close_btn");
+                Array.from(close_btn).forEach((btn) => {
+                    btn.style.display = 'block';
+                });
             })
-            .catch(() => console.log("Something went wrong!"));
+            .catch(() => alert("No Trailer Uploaded! Please Try Again Later."));
         }
+    };
+
+    // close button is clicked, bring back the banner.
+    function clickClose (event) {
+        event.target.style.display = 'none'; // Hide the button when clicked
+        setTrailerURL("");
     };
 
   return (
@@ -63,11 +76,12 @@ const Banner = () => {
             backgroundImage: `url(${parent_url}${movies?.backdrop_path})`,
             backgroundPosition: "center center"
             }}>
+            <div className="close_btn" style={{display: "none"}} onClick={clickClose}><CloseIcon/></div>
             <div className="banner_details">
                 {/* get title, name OR original name attribute from API depending on what the API used to save movie title */}
                 <h2>{cutshort(movies?.title, 24) || cutshort(movies?.name, 24) || cutshort(movies?.original_name, 24)}</h2>
                 <div className="banner_description">
-                    <h4>{cutshort(movies.overview, 280)}</h4>
+                    <h4>{cutshort(movies?.overview, 280)}</h4>
                 </div>
                 <div className="banner_btn">
                     <button className="play" onClick={() => clickPlay(movies)}><PlayArrowIcon/> Play</button>
